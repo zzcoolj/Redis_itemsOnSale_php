@@ -37,18 +37,17 @@
  			switch($message->payload) {
  				case 'data_initialized':
  				$pubsub->unsubscribe();
- 				?> Please select categories to which you want to subscribe: <br>
- 				<?
+ 				echo "Please select categories to which you want to subscribe: <br>";
  				$categorySet = $redis->smembers('categorySetKey');
  				$categoriesQuantity = sizeof($categorySet);
  				for($i=0; $i<$categoriesQuantity; $i++){
  					$categoryInfo = $redis->get('category:'.$i);
- 					?><input type="checkbox" id="<? echo 'category:'.$i ?>"><? echo $categoryInfo ?></input><?
+ 					echo "<input type='checkbox' id='category:$i'>";
+ 					echo $categoryInfo ;
+ 					echo "</input>";
  				}
- 				?>
- 				<br><?php 
- 				echo '<button onclick=pageChange();>Submit</button>'; 
- 				?><?
+ 				echo "<br>"; 
+ 				echo "<button onclick='pageChange();'>Submit</button>"; 
  			}
 
  			/*
@@ -92,10 +91,10 @@
  			$categoryInfo = $redis->get('category:'.$i);
  			?>
  			//alert("<? echo $categoryInfo ?>");
- 			if(document.getElementById("<? echo 'category:'.$i ?>").checked == true){
- 				selectedCategories.push("<? echo 'category:products:'.$i ?>");
+ 			if(document.getElementById("<?php echo 'category:'.$i ?>").checked == true){
+ 				selectedCategories.push("<?php echo 'category:products:'.$i ?>");
  			}
- 			<?
+ 			<?php
  		}
  		?>
 		window.location.href='categoryItems.php?selectedCategories='+selectedCategories;
