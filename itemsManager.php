@@ -1,0 +1,79 @@
+ <?php
+
+ require 'vendor/autoload.php';
+
+
+ $redis = new Predis\Client([
+ 	'scheme' => 'tcp',
+ 	'host' => '127.0.0.1',
+ 	'port' => 6379
+ 	]);
+
+ $redis->flushall();
+
+ $productsSetKey = "products";
+ $redis->sadd($productsSetKey, ['product:0', 'product:1', 'product:2']);
+
+ $redis->hmset('product:0', [
+ 	'name' => 'aquarium1',
+ 	'length' => '60',
+ 	'width' => '30',
+ 	'height' => '40',
+ 	'price' => '50',
+ 	'address:city' => 'Palaiseau',
+ 	'address:phone' => '0132547698',
+ 	'category' => 'aquarium',
+ 	'description' => 'Sed posuere consectetur est at lobortis. Donec ullamcorper nulla non metus auctor fringilla. Maecenas faucibus mollis interdum. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur. Donec sed odio dui.'
+ 	]);
+ $redis->hmset('product:1', [
+ 	'name' => 'aquarium2',
+ 	'liters' => '55',
+ 	'price' => '30',
+ 	'address:city' => 'Palaiseau',
+ 	'address:phone' => '0123456789',
+ 	'category' => 'aquarium',
+ 	'description' => 'Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Aenean lacinia bibendum nulla sed consectetur. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.'
+ 	]);
+ $redis->hmset('product:2', [
+ 	'name' => 'bike1',
+ 	'size' => '53',
+ 	'price' => '75',
+ 	'city' => 'Orsay',
+ 	'category' => 'bike',
+ 	'description' => 'Maecenas faucibus is interdum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam quis risus eget urna mollis ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+ 	]);
+
+ $redis->sadd('categorySetKey', ['category:0', 'category:1']);
+ $redis->set('category:0', 'aquarium');
+ $redis->set('category:1', 'bike');
+ $redis->publish('control_channel', 'data_initialized');
+
+
+showProducts($redis);
+ 
+function showProducts($redis) {
+	?> Products: <?
+	if($redis->exists('products')){
+		$productsSet = $redis->smembers('products');
+		$productsQuantity = sizeof($productsSet);
+		for($i=0; $i<$productsQuantity; $i++) {
+			$productKey = 'product:'.$i;
+			$productInfo = $redis->hgetall($productKey);
+			?>
+			<table border="2">
+			<?php
+			foreach ($productInfo as $key => $value) {
+				?>
+				<tr>
+					<td><? echo $key ?></td>
+					<td><? echo $value ?></td>
+				</tr>
+				<?php
+			}
+			?> </table> <br> <?php
+		}
+	} else {
+		echo "There is no products.";
+	}
+}
+
