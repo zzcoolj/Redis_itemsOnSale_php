@@ -24,7 +24,7 @@ for($i=0; $i<$selectedCategoriesQuantity; $i++) {
 function showProductsOfCategory($redis, $category) {
 	$categoryId = explode(":", $category);
 	$categoryId = $categoryId[2];
-	?> Products of category <? echo $redis->get('category:'.$categoryId); ?>: <?
+	?> Products of category <?php echo $redis->get('category:'.$categoryId); ?>: <?php
 	if($redis->exists($category)){
 		$productsSet = $redis->smembers($category);
 		$productsQuantity = sizeof($productsSet);
@@ -38,8 +38,8 @@ function showProductsOfCategory($redis, $category) {
 				foreach ($productInfo as $key => $value) {
 					?>
 					<tr>
-						<td><? echo $key ?></td>
-						<td><? echo $value ?></td>
+						<td><?php echo $key ?></td>
+						<td><?php echo $value ?></td>
 					</tr>
 					<?php
 				}
