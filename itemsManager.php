@@ -46,6 +46,10 @@
  $redis->sadd('categorySetKey', ['category:0', 'category:1']);
  $redis->set('category:0', 'aquarium');
  $redis->set('category:1', 'bike');
+
+$redis->sadd('category:products:0', ['product:0', 'product:1']);
+$redis->sadd('category:products:1', ['product:2']);
+
  $redis->publish('control_channel', 'data_initialized');
 
 

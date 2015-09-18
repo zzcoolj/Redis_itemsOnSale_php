@@ -38,18 +38,18 @@
  				case 'data_initialized':
  				$pubsub->unsubscribe();
  				?> Please select categories to which you want to subscribe: <br>
- 					<?
- 					$categorySet = $redis->smembers('categorySetKey');
- 					$categoriesQuantity = sizeof($categorySet);
- 					for($i=0; $i<$categoriesQuantity; $i++){
- 						$categoryInfo = $redis->get('category:'.$i);
- 						?><input type="checkbox" id="<? echo $categoryInfo ?>"><? echo $categoryInfo ?></input><?
- 					}
- 					?>
- 					<br><?php 
- 					echo '<button onclick=pageChange();>Submit</button>'; 
- 					?><?
+ 				<?
+ 				$categorySet = $redis->smembers('categorySetKey');
+ 				$categoriesQuantity = sizeof($categorySet);
+ 				for($i=0; $i<$categoriesQuantity; $i++){
+ 					$categoryInfo = $redis->get('category:'.$i);
+ 					?><input type="checkbox" id="<? echo 'category:'.$i ?>"><? echo $categoryInfo ?></input><?
  				}
+ 				?>
+ 				<br><?php 
+ 				echo '<button onclick=pageChange();>Submit</button>'; 
+ 				?><?
+ 			}
 
  			/*
  			if ($message->payload == 'quit_loop') {
@@ -83,19 +83,22 @@
  $info = $client->info();
 // print_r("Goodbye from Redis v{$info['redis_version']}!\n");
  ?>
-<script type="text/javascript">
-function pageChange(){
-	if(document.getElementById("bike").checked == true){
-		<?php
-		for($i=0; $i<$categoriesQuantity; $i++){
- 						$categoryInfo = $redis->get('category:'.$i);
- 						?>alert("<? echo $categoryInfo ?>");<?
+ <script type="text/javascript">
+ 	function pageChange(){
+ 		var selectedCategories = new Array();
+
+ 		<?php
+ 		for($i=0; $i<$categoriesQuantity; $i++){
+ 			$categoryInfo = $redis->get('category:'.$i);
+ 			?>
+ 			//alert("<? echo $categoryInfo ?>");
+ 			if(document.getElementById("<? echo 'category:'.$i ?>").checked == true){
+ 				selectedCategories.push("<? echo 'category:'.$i ?>");
  			}
+ 			<?
+ 		}
  		?>
-		//alert("bike");
+		window.location.href='categoryItems.php?selectedCategories='+selectedCategories;
 	}
-	window.location.href='categoryItems.php';
-}
 </script>
 
- 
