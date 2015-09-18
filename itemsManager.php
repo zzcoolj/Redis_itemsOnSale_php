@@ -56,25 +56,24 @@ $redis->sadd('category:products:1', ['product:2']);
 showProducts($redis);
  
 function showProducts($redis) {
-	?> Products: <?
+	echo "Products:";
 	if($redis->exists('products')){
 		$productsSet = $redis->smembers('products');
 		$productsQuantity = sizeof($productsSet);
 		for($i=0; $i<$productsQuantity; $i++) {
 			$productKey = 'product:'.$i;
 			$productInfo = $redis->hgetall($productKey);
-			?>
-			<table border="2">
-			<?php
+			echo "<table border='2'>";
+			
 			foreach ($productInfo as $key => $value) {
-				?>
-				<tr>
-					<td><? echo $key ?></td>
-					<td><? echo $value ?></td>
-				</tr>
-				<?php
+				
+				echo "<tr>";
+				echo "<td> $key </td>";
+				echo "<td> $value</td>";
+				echo "</tr>";
+				
 			}
-			?> </table> <br> <?php
+			echo "</table> <br>";
 		}
 	} else {
 		echo "There is no products.";
