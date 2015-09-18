@@ -93,7 +93,7 @@
  			?>
  			//alert("<? echo $categoryInfo ?>");
  			if(document.getElementById("<? echo 'category:'.$i ?>").checked == true){
- 				selectedCategories.push("<? echo 'category:'.$i ?>");
+ 				selectedCategories.push("<? echo 'category:products:'.$i ?>");
  			}
  			<?
  		}

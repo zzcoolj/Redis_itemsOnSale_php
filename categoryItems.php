@@ -11,37 +11,42 @@ $redis = new Predis\Client([
 
 
 $selectedCategories = $_GET['selectedCategories'];
-?> The category(categories) you have selected is(are): <?
 $selectedCategories = explode(",",$selectedCategories);
-print_r($selectedCategories);
+
+$selectedCategoriesQuantity = sizeof($selectedCategories);
+for($i=0; $i<$selectedCategoriesQuantity; $i++) {
+	showProductsOfCategory($redis, $selectedCategories[$i]);
+}
 
 
-showProductsOfCategory($redis, 'category:products:1');
 
 
 function showProductsOfCategory($redis, $category) {
-	?> Products: <?
+	$categoryId = explode(":", $category);
+	$categoryId = $categoryId[2];
+	?> Products of category <? echo $redis->get('category:'.$categoryId); ?>: <?
 	if($redis->exists($category)){
 		$productsSet = $redis->smembers($category);
 		$productsQuantity = sizeof($productsSet);
 		for($i=0; $i<$productsQuantity; $i++) {
-			$productKey = 'product:'.$i;
+
+			$productKey = $productsSet[$i];
 			$productInfo = $redis->hgetall($productKey);
 			?>
 			<table border="2">
-			<?php
-			foreach ($productInfo as $key => $value) {
-				?>
-				<tr>
-					<td><? echo $key ?></td>
-					<td><? echo $value ?></td>
-				</tr>
 				<?php
+				foreach ($productInfo as $key => $value) {
+					?>
+					<tr>
+						<td><? echo $key ?></td>
+						<td><? echo $value ?></td>
+					</tr>
+					<?php
+				}
+				?> </table> <br> <?php
 			}
-			?> </table> <br> <?php
+		} else {
+			echo "There is no products.";
 		}
-	} else {
-		echo "There is no products.";
 	}
-}
 
