@@ -64,6 +64,12 @@
                                     <input class="form-control" id="price" type="text">
                                 </div>
                                 <div class="form-group">
+                                    <label for="category">
+                                        Category
+                                    </label>
+                                    <input class="form-control" id="category" type="text">
+                                </div>
+                                <div class="form-group">
                                     <label for="description">
                                         Description
                                     </label>
@@ -87,6 +93,9 @@
                                         Price
                                     </th>
                                     <th>
+                                    category
+                                    </th>
+                                    <th>
                                        Description
                                     </th>
                                 </tr>
@@ -100,15 +109,21 @@
                                         300
                                     </td>
                                     <td>
+                                        category1
+                                    </td>
+                                    <td>
                                        keyword1 keyword2 keyword3
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        Product1
+                                        Product2
                                     </td>
                                     <td>
                                         300
+                                    </td>
+                                    <td>
+                                        category2
                                     </td>
                                     <td>
                                         keyword1 keyword2 keyword3
@@ -116,10 +131,13 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        Product1
+                                        Product3
                                     </td>
                                     <td>
                                         300
+                                    </td>
+                                    <td>
+                                        category3
                                     </td>
                                     <td>
                                         keyword1 keyword2 keyword3
@@ -127,10 +145,13 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        Product1
+                                        Product4
                                     </td>
                                     <td>
                                         300
+                                    </td>
+                                    <td>
+                                        category4
                                     </td>
                                     <td>
                                         keyword1 keyword2 keyword3
