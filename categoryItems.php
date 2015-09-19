@@ -2,23 +2,23 @@
 
 require 'vendor/autoload.php';
 
-
 $redis = new Predis\Client([
 	'scheme' => 'tcp',
 	'host' => '127.0.0.1',
-	'port' => 6379
+	'port' => 6379,
 	]);
-
 
 $selectedCategories = $_GET['selectedCategories'];
 $selectedCategories = explode(",",$selectedCategories);
+$selectedCategoriesString = $selectedCategories[0];
 
 $selectedCategoriesQuantity = sizeof($selectedCategories);
 for($i=0; $i<$selectedCategoriesQuantity; $i++) {
 	showProductsOfCategory($redis, $selectedCategories[$i]);
+	if($i != 0) {
+		$selectedCategoriesString = $selectedCategoriesString.','.$selectedCategories[$i];
+	}
 }
-
-
 
 
 function showProductsOfCategory($redis, $category) {
@@ -49,4 +49,12 @@ function showProductsOfCategory($redis, $category) {
 			echo "There is no products.";
 		}
 	}
+
+?>
+
+ <script type="text/javascript">
+	window.location.href='categorySubscribe.php?selectedCategories='+ '<? echo $selectedCategoriesString; ?>';
+</script>
+
+
 
