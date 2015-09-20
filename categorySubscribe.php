@@ -21,8 +21,8 @@ $pubsub = $client->pubSubLoop();
 $selectedCategories = $_GET['selectedCategories'];
 $selectedCategories = explode(",",$selectedCategories);
 echo "<script language='javascript' type='text/javascript'>";  
-	echo "var selectedCategories = new Array();";  
-	echo "</script>";
+echo "var selectedCategories = new Array();";    
+echo "</script>";
 
 $categoriesQuantity = sizeof($selectedCategories);
 for($i=0; $i<$categoriesQuantity; $i++){
@@ -48,10 +48,14 @@ foreach ($pubsub as $message) {
 		case 'message':
 
 		$pubsub->unsubscribe();
+		$listenChannel = false;
+		for($i=0; $i<categoriesQuantity; $i++) {
+
+		}
 		//unset($pubsub);
-	echo "<script language='javascript' type='text/javascript'>";  
-	echo "alert('$message->channel'+'<---->'+'$message->payload');";  
-	echo "</script>";
+		echo "<script language='javascript' type='text/javascript'>";  
+		echo "alert('$message->channel'+'<---->'+'$message->payload');";  
+		echo "</script>";
 		break;
 	}
 }
@@ -61,7 +65,7 @@ unset($pubsub);
 <button onclick='pageChange();' id="button">Submit</button>
 <script type="text/javascript">
 	document.getElementById("button").click();
- 	function pageChange(){
+	function pageChange(){
 		window.location.href='categoryItems.php?selectedCategories='+selectedCategories;
 	}
 </script>

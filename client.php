@@ -27,6 +27,10 @@
 // to push messages to the channels. Examples:
 //   ./redis-cli PUBLISH notifications "this is a test"
 //   ./redis-cli PUBLISH control_channel quit_loop
+
+// !!! Not wait, it publish contro_channel data_initialized by it self. If we use itemsManager.php, remove this line below.
+$redis->publish('control_channel', 'data_initialized');
+
  foreach ($pubsub as $message) {
  	switch ($message->kind) {
  		case 'subscribe':
@@ -37,6 +41,7 @@
  			switch($message->payload) {
  				case 'data_initialized':
  				$pubsub->unsubscribe();
+ 				// categories
  				echo "Please select categories to which you want to subscribe: <br>";
  				$categorySet = $redis->smembers('categorySetKey');
  				$categoriesQuantity = sizeof($categorySet);
@@ -46,8 +51,17 @@
  					echo $categoryInfo ;
  					echo "</input>";
  				}
- 				echo "<br>"; 
- 				echo "<button onclick='pageChange();'>Submit</button>"; 
+ 				echo "<br><br>"; 
+ 				// keywords
+ 				echo "Please select keywords to which you want to subscribe: <br>";
+ 				$keywordsSet = $redis->keys("keyword:*");
+ 				foreach ($keywordsSet as $keywordKey) {
+ 					echo "<input type='checkbox' id=$keywordKey >";
+ 					echo $keywordKey;
+ 					echo "</input><br>";
+ 				}
+
+ 				echo "<br><button onclick='pageChange();'>Submit</button>"; 
  			}
 
  			/*
@@ -85,6 +99,7 @@
  <script type="text/javascript">
  	function pageChange(){
  		var selectedCategories = new Array();
+ 		var selectedKeywords = new Array();
 
  		<?php
  		for($i=0; $i<$categoriesQuantity; $i++){
@@ -96,8 +111,17 @@
  			}
  			<?php
  		}
+ 		foreach ($keywordsSet as $keywordKey) {
+ 			$keywordValue = explode(":", $keywordKey);
+ 			$keywordValue = $keywordValue[1];
+ 			?>
+ 			if(document.getElementById("<?php echo $keywordKey ?>").checked == true){
+ 				selectedKeywords.push("<?php echo $keywordValue ?>");
+ 			}
+ 			<?php	
+ 		}
  		?>
-		window.location.href='categoryItems.php?selectedCategories='+selectedCategories;
+		window.location.href='categoryItems.php?selectedCategories='+selectedCategories+'&keywords='+selectedKeywords;
 	}
 </script>
 

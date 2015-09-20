@@ -9,9 +9,10 @@ $redis = new Predis\Client([
 	]);
 
 $selectedCategories = $_GET['selectedCategories'];
+
+
 $selectedCategories = explode(",",$selectedCategories);
 $selectedCategoriesString = $selectedCategories[0];
-
 $selectedCategoriesQuantity = sizeof($selectedCategories);
 for($i=0; $i<$selectedCategoriesQuantity; $i++) {
 	showProductsOfCategory($redis, $selectedCategories[$i]);
@@ -19,6 +20,16 @@ for($i=0; $i<$selectedCategoriesQuantity; $i++) {
 		$selectedCategoriesString = $selectedCategoriesString.','.$selectedCategories[$i];
 	}
 }
+
+$selectedKeywords = $_GET['keywords'];
+$selectedKeywords = explode(",",$selectedKeywords);
+$selectedKeywordsQuantity = sizeof($selectedKeywords);
+$productsResult = array();
+for($i=0; $i<$selectedKeywordsQuantity; $i++) {
+	array_push($productsResult, 'keyword:'.$selectedKeywords[$i]);
+}
+$result = $redis->sinter($productsResult);
+showProductsByKeyWords($redis, $result, $selectedKeywords);
 
 
 function showProductsOfCategory($redis, $category) {
@@ -46,9 +57,34 @@ function showProductsOfCategory($redis, $category) {
 				?> </table> <br> <?php
 			}
 		} else {
-			echo "There is no products.";
+			echo "There is no products.<br>";
 		}
 	}
+
+function showProductsByKeyWords($redis, $productsKeySet, $selectedKeywords) {
+	$productsKeyWordsQuantity = sizeof($productsKeySet);
+	?> Products of keywords <?php print_r($selectedKeywords); ?>: <?php
+	if($productsKeyWordsQuantity != 0){
+		for($i=0; $i<$productsKeyWordsQuantity; $i++) {
+			$productKey = $productsKeySet[$i];
+			$productInfo = $redis->hgetall($productKey);
+			?>
+			<table border="2">
+				<?php
+				foreach ($productInfo as $key => $value) {
+					?>
+					<tr>
+						<td><?php echo $key ?></td>
+						<td><?php echo $value ?></td>
+					</tr>
+					<?php
+				}
+				?> </table> <br> <?php
+		}
+	} else {
+		echo "There is no products.";
+	}
+}
 
 ?>
 
