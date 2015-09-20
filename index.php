@@ -75,7 +75,7 @@
                                     </label>
                                     <textarea class="form-control" id="description" rows="1">Description</textarea>
                                 </div>
-                                <button type="submit" class="btn btn-default">
+                                <button type="button" class="btn btn-default" id="submit">
                                     Submit
                                 </button>
                             </form>
@@ -83,82 +83,42 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>
-                                        Name
-                                    </th>
-                                    <th>
-                                        Price
-                                    </th>
-                                    <th>
-                                    category
-                                    </th>
-                                    <th>
-                                       Description
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                   <td>
-                                        Product1
-                                    </td>
-                                    <td>
-                                        300
-                                    </td>
-                                    <td>
-                                        category1
-                                    </td>
-                                    <td>
-                                       keyword1 keyword2 keyword3
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Product2
-                                    </td>
-                                    <td>
-                                        300
-                                    </td>
-                                    <td>
-                                        category2
-                                    </td>
-                                    <td>
-                                        keyword1 keyword2 keyword3
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Product3
-                                    </td>
-                                    <td>
-                                        300
-                                    </td>
-                                    <td>
-                                        category3
-                                    </td>
-                                    <td>
-                                        keyword1 keyword2 keyword3
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Product4
-                                    </td>
-                                    <td>
-                                        300
-                                    </td>
-                                    <td>
-                                        category4
-                                    </td>
-                                    <td>
-                                        keyword1 keyword2 keyword3
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <div id="contentContainer">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th>
+                                            Price
+                                        </th>
+                                        <th>
+                                            category
+                                        </th>
+                                        <th>
+                                            Description
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="table">
+                                    <tr>
+                                        <td>
+                                            Product1
+                                        </td>
+                                        <td>
+                                            300
+                                        </td>
+                                        <td>
+                                            category1
+                                        </td>
+                                        <td>
+                                            keyword1 keyword2 keyword3
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
