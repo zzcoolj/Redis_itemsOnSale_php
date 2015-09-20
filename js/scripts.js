@@ -3,8 +3,10 @@
 
 $(document).ready(function () {
 
+    // Initialise the talbe with content already loaded in REDIS
     printAllProduct();
 
+    // Add a new product with ajax call
     $("#submit").click(function () {
         var productName = $("#name").val();
         var productPrice = $("#price").val();
@@ -16,9 +18,11 @@ $(document).ready(function () {
             url: "addProduct.php",
             data: dataContainer,
             success: function (data) {
+                // Case data was succefully loaded in REDIS => Append the new added product to the HTML Table
                 appendProductToTable(data);
             },
             error: function (xhr, ajaxOptions, thrownError) {
+                // Case the loading process failed => Print the code error (please see apache log for debug insights)
                 alert(xhr.status + " : " + thrownError);
             }
         });
@@ -32,17 +36,17 @@ function printAllProduct() {
             type: "POST",
             url: "getAllProduct.php",
             success: function (data) {
+                // Create the HTML Table in the index page
                 $("#contentContainer").html("<table class='table'><thead> <tr> <th>Name </th> <th>Price</th><th>category</th><th>Description</th></tr></thead><tbody id='table'>");
-                console.log(data);
                 parsedData = jQuery.parseJSON(data);
                 console.log(parsedData[0]);
+                // Loop throw the data set returned by the PHP Controller and append each one to the HTML table
                 for (var i = 0; i < parsedData.length; i++) {
                     $("#table").append("<tr> <td>" + parsedData[i].name + "</td> <td>" + parsedData[i].price + "</td> <td>" + parsedData[i].category + "</td><td>" + parsedData[i].description + "</td> </tr>");
                 }
-
-
             },
             error: function (xhr, ajaxOptions, thrownError) {
+                // PHP Controller Failing case
                 alert(xhr.status + " : " + thrownError);
             }
         });
@@ -57,9 +61,8 @@ function appendProductToTable(productKey) {
             url: "getProductByKey.php",
             data: "productKey=" + productKey,
             success: function (data) {
-                console.log(data);
+                // Parsed returned string to JSON Object
                 parsedData = jQuery.parseJSON(data);
-                console.log(parsedData);
                 $("#table").append("<tr> <td>" + parsedData.name + "</td> <td>" + parsedData.price + "</td> <td>" + parsedData.category + "</td><td>" + parsedData.description + "</td> </tr>");
             },
             error: function (xhr, ajaxOptions, thrownError) {
