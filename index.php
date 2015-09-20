@@ -35,10 +35,10 @@
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
                                 <li class="active">
-                                    <a href="#">Products</a>
+                                    <a href="index.php">Products</a>
                                 </li>
                                 <li>
-                                    <a href="#">Client</a>
+                                    <a href="client.php">Client</a>
                                 </li>
                             </ul>
                         </div>
@@ -84,40 +84,6 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div id="contentContainer">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th>
-                                            Name
-                                        </th>
-                                        <th>
-                                            Price
-                                        </th>
-                                        <th>
-                                            category
-                                        </th>
-                                        <th>
-                                            Description
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="table">
-                                    <tr>
-                                        <td>
-                                            Product1
-                                        </td>
-                                        <td>
-                                            300
-                                        </td>
-                                        <td>
-                                            category1
-                                        </td>
-                                        <td>
-                                            keyword1 keyword2 keyword3
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
                     </div>

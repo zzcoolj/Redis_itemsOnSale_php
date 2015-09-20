@@ -26,10 +26,10 @@ $(document).ready(function () {
                 alert(xhr.status + " : " + thrownError);
             }
         });
-        console.log("submit");
     });
 });
 
+// Search all product in the REDIS database and print them on the HTML Page as Table
 function printAllProduct() {
     $(document).ready(function () {
         $.ajax({
@@ -39,7 +39,6 @@ function printAllProduct() {
                 // Create the HTML Table in the index page
                 $("#contentContainer").html("<table class='table'><thead> <tr> <th>Name </th> <th>Price</th><th>category</th><th>Description</th></tr></thead><tbody id='table'>");
                 parsedData = jQuery.parseJSON(data);
-                console.log(parsedData[0]);
                 // Loop throw the data set returned by the PHP Controller and append each one to the HTML table
                 for (var i = 0; i < parsedData.length; i++) {
                     $("#table").append("<tr> <td>" + parsedData[i].name + "</td> <td>" + parsedData[i].price + "</td> <td>" + parsedData[i].category + "</td><td>" + parsedData[i].description + "</td> </tr>");
@@ -53,6 +52,7 @@ function printAllProduct() {
     });
 }
 
+// Append the product with the given productId to the Table
 function appendProductToTable(productKey) {
     $(document).ready(function () {
         console.log(productKey);
