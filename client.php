@@ -29,7 +29,7 @@
 //   ./redis-cli PUBLISH control_channel quit_loop
 
 // !!! Not wait, it publish contro_channel data_initialized by it self. If we use itemsManager.php, remove this line below.
-$redis->publish('control_channel', 'data_initialized');
+ $redis->publish('control_channel', 'data_initialized');
 
  foreach ($pubsub as $message) {
  	switch ($message->kind) {
@@ -40,29 +40,93 @@ $redis->publish('control_channel', 'data_initialized');
  		if ($message->channel == 'control_channel') {
  			switch($message->payload) {
  				case 'data_initialized':
- 				$pubsub->unsubscribe();
- 				// categories
- 				echo "Please select categories to which you want to subscribe: <br>";
- 				$categorySet = $redis->smembers('categorySetKey');
- 				$categoriesQuantity = sizeof($categorySet);
- 				for($i=0; $i<$categoriesQuantity; $i++){
- 					$categoryInfo = $redis->get('category:'.$i);
- 					echo "<input type='checkbox' id='category:$i'>";
- 					echo $categoryInfo ;
- 					echo "</input>";
- 				}
- 				echo "<br><br>"; 
- 				// keywords
- 				echo "Please select keywords to which you want to subscribe: <br>";
- 				$keywordsSet = $redis->keys("keyword:*");
- 				foreach ($keywordsSet as $keywordKey) {
- 					echo "<input type='checkbox' id=$keywordKey >";
- 					echo $keywordKey;
- 					echo "</input><br>";
- 				}
 
- 				echo "<br><button onclick='pageChange();'>Submit</button>"; 
+ 				
+ 				echo "<head>";
+ 				echo '<meta charset="utf-8">';
+ 				echo '	<meta http-equiv="X-UA-Compatible" content="IE=edge">';
+ 				echo '	<meta name="viewport" content="width=device-width, initial-scale=1">';
+
+ 				echo "	<title>POC - REDIS (PHP)</title>";
+
+ 				echo '	<meta name="description" content="Source code generated using layoutit.com">';
+ 				echo '	<meta name="author" content="LayoutIt!">';
+
+ 				echo '	<link href="css/bootstrap.min.css" rel="stylesheet">';
+ 				echo '	<link href="css/style.css" rel="stylesheet">';
+
+ 				echo "</head>";
+ 				echo "<body>";
+
+ 					echo '<div class="container-fluid">';
+ 						echo '<div class="row">';
+ 							echo '<div class="col-md-12">';
+ 								echo '<div class="row">';
+ 									echo '<div class="col-md-12">';
+ 										echo '<nav class="navbar navbar-default" role="navigation">';
+ 											echo '<div class="navbar-header">';
+
+ 												echo '<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">';
+ 												echo '<span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
+ 											echo "</button>";
+ 											echo '<a class="navbar-brand" href="#">POC - Redis (PHP)</a>';
+ 										echo "</div>";
+
+ 										echo '<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">';
+ 											echo '<ul class="nav navbar-nav">';
+ 												echo '<li >';
+ 													echo '<a href="index.php">Products</a>';
+ 												echo "</li>";
+ 												echo '<li class="active">';
+ 													echo '<a href="client.php">Client</a>';
+ 												echo "</li>";
+ 											echo "</ul>";
+ 										echo "</div>";
+
+ 									echo "</nav>";
+ 								echo "</div>";
+ 							echo "</div>";
+ 						echo "</div>";
+ 					echo "</div>";
+ 					echo "<div>";
+
+
+ 			$pubsub->unsubscribe();
+ 				// categories
+ 			echo "Please select categories to which you want to subscribe: <br>";
+ 			$categorySet = $redis->smembers('categorySetKey');
+ 			$categoriesQuantity = sizeof($categorySet);
+ 			for($i=0; $i<$categoriesQuantity; $i++){
+ 				$categoryInfo = $redis->get('category:'.$i);
+ 				echo "<input type='checkbox' id='category:$i'>";
+ 				echo $categoryInfo ;
+ 				echo "</input>";
  			}
+ 			echo "<br><br>"; 
+ 				// keywords
+ 			echo "Please select keywords to which you want to subscribe: <br>";
+ 			$keywordsSet = $redis->keys("keyword:*");
+ 			foreach ($keywordsSet as $keywordKey) {
+ 				echo "<input type='checkbox' id=$keywordKey >";
+ 				$keyworkShown = explode(":", $keywordKey);
+ 				$keyworkShown = $keyworkShown[1];
+ 				echo $keyworkShown;
+ 				echo "</input><br>";
+ 			}
+
+ 			
+ 			echo "</div>";
+ 			echo "<br><button class='btn btn-default' onclick='pageChange();'>Submit</button>";
+ 				echo "</div>";
+
+ 				echo '<script src="js/jquery.min.js"></script>';
+ 				echo '<script src="js/bootstrap.min.js"></script>';
+ 				echo '<script src="js/scripts.js"></script>';
+ 			echo "</body>";
+ 			
+
+ 			 
+ 		}
 
  			/*
  			if ($message->payload == 'quit_loop') {
@@ -121,7 +185,7 @@ $redis->publish('control_channel', 'data_initialized');
  			<?php	
  		}
  		?>
-		window.location.href='categoryItems.php?selectedCategories='+selectedCategories+'&keywords='+selectedKeywords;
-	}
-</script>
+ 		window.location.href='categoryItems.php?selectedCategories='+selectedCategories+'&keywords='+selectedKeywords;
+ 	}
+ </script>
 

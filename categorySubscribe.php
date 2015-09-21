@@ -54,7 +54,9 @@ foreach ($pubsub as $message) {
 		}
 		//unset($pubsub);
 		echo "<script language='javascript' type='text/javascript'>";  
-		echo "alert('$message->channel'+'<---->'+'$message->payload');";  
+		$categoryName = explode("_", $message->channel);
+		$categoryName = $categoryName[1];
+		echo "alert('A new product('+'$message->payload'+') has been added in the category '+'$categoryName'+'.');";  
 		echo "</script>";
 		break;
 	}
